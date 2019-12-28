@@ -46,7 +46,9 @@ public class XposedModuleEntry {
 
     private static final String DIR_BASE = Environment.getExternalStorageDirectory().getAbsolutePath();
 
-    private static final String XPOSED_MODULE_FILE_PATH = "xposed_config/modules.list";
+    // 每个应用加载自己的list
+    // 2019/12/14 MlgmXyysd
+    private static String XPOSED_MODULE_FILE_PATH;
 
     private static Context appContext;
 
@@ -84,6 +86,8 @@ public class XposedModuleEntry {
         }
 
         appContext = context;
+
+        XPOSED_MODULE_FILE_PATH = "xposed_config/" + appContext.getPackageName() + ".list";
 
         if (Build.VERSION.SDK_INT > Build.VERSION_CODES.LOLLIPOP) {
             if (!FileUtils.isFilePermissionGranted(context)) {
